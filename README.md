@@ -15,3 +15,6 @@
 
 ## Don't be an idiot
 * Run it as administrator to make people unable to open the "threat"
+
+## Download
+* You can download it [here](https://github.com/TheCyberDiamond/CyberLock/releases)
