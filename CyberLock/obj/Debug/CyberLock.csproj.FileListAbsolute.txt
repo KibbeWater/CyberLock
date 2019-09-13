@@ -1,0 +1,10 @@
+C:\Users\05lir002\source\repos\CyberLock\CyberLock\bin\Debug\CyberLock.exe.config
+C:\Users\05lir002\source\repos\CyberLock\CyberLock\bin\Debug\CyberLock.exe
+C:\Users\05lir002\source\repos\CyberLock\CyberLock\bin\Debug\CyberLock.pdb
+C:\Users\05lir002\source\repos\CyberLock\CyberLock\obj\Debug\CyberLock.csprojAssemblyReference.cache
+C:\Users\05lir002\source\repos\CyberLock\CyberLock\obj\Debug\CyberLock.Form1.resources
+C:\Users\05lir002\source\repos\CyberLock\CyberLock\obj\Debug\CyberLock.Properties.Resources.resources
+C:\Users\05lir002\source\repos\CyberLock\CyberLock\obj\Debug\CyberLock.csproj.GenerateResource.cache
+C:\Users\05lir002\source\repos\CyberLock\CyberLock\obj\Debug\CyberLock.csproj.CoreCompileInputs.cache
+C:\Users\05lir002\source\repos\CyberLock\CyberLock\obj\Debug\CyberLock.exe
+C:\Users\05lir002\source\repos\CyberLock\CyberLock\obj\Debug\CyberLock.pdb
