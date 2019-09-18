@@ -10,20 +10,34 @@ using System.Timers;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Runtime;
 
 namespace CyberLock
 {
     public partial class Form1 : Form
     {
+        [FlagsAttribute]
+        public enum EXECUTION_STATE : uint
+        {
+            ES_AWAYMODE_REQUIRED = 0x00000040,
+            ES_CONTINUOUS = 0x80000000,
+            ES_DISPLAY_REQUIRED = 0x00000002,
+            ES_SYSTEM_REQUIRED = 0x00000001
+            // Legacy flag, should not be used.
+            // ES_USER_PRESENT = 0x00000004
+        }
+
         private Rectangle ScreenSize = Screen.PrimaryScreen.WorkingArea;
         private int ScreenX;
         private int ScreenY;
 
         private bool BypassQuit = false;
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
+        [DllImport("user32.dll",EntryPoint = "SetForegroundWindow")]
         static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("kernel32.dll",EntryPoint = "SetThreadExecutionState")]
+        static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);
 
         public Form1()
         {
@@ -44,12 +58,21 @@ namespace CyberLock
 
         private void Update(object source, ElapsedEventArgs e)
         {
-            if(Form.ActiveForm == this)
+            
+            PreventSleep();
+            try
             {
-                BeginInvoke(new MethodInvoker(() =>
+                if (Form.ActiveForm != this)
                 {
-                    SetForegroundWindow(this.Handle);
-                }));
+                    BeginInvoke(new MethodInvoker(() =>
+                    {
+                        SetForegroundWindow(this.Handle);
+                    }));
+                }
+            }
+            catch
+            {
+
             }
             if(Cursor.Position != new Point(ScreenX / 2, ScreenY / 2))
             {
@@ -99,7 +122,7 @@ namespace CyberLock
                                     }
                                     catch(Exception b)
                                     {
-                                        //Console.WriteLine("Error with hide method: " + b.Message);
+                                        
                                     }
                                 }
                                 BeginInvoke(new MethodInvoker(() =>
@@ -155,6 +178,13 @@ namespace CyberLock
             {
                 info_text.Text = "CYBERLOCK IS ACTIVE";
             }));
+        }
+
+        void PreventSleep()
+        {
+            // Prevent Idle-to-Sleep (monitor not affected) (see note above)
+            SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_SYSTEM_REQUIRED | EXECUTION_STATE.ES_DISPLAY_REQUIRED);
+            Console.WriteLine("Preventing Sleep");
         }
 
     }

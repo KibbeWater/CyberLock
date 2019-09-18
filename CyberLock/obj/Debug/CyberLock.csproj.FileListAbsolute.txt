@@ -8,3 +8,5 @@ C:\Users\05lir002\source\repos\CyberLock\CyberLock\obj\Debug\CyberLock.csproj.Ge
 C:\Users\05lir002\source\repos\CyberLock\CyberLock\obj\Debug\CyberLock.csproj.CoreCompileInputs.cache
 C:\Users\05lir002\source\repos\CyberLock\CyberLock\obj\Debug\CyberLock.exe
 C:\Users\05lir002\source\repos\CyberLock\CyberLock\obj\Debug\CyberLock.pdb
+C:\Users\05lir002\source\repos\CyberLock\CyberLock\bin\Debug\Microsoft.Expression.Encoder.dll
+C:\Users\05lir002\source\repos\CyberLock\CyberLock\obj\Debug\CyberLock.csproj.CopyComplete
