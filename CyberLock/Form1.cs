@@ -11,6 +11,9 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime;
+using System.IO;
+using CyberLock.Structs;
+using System.Threading;
 
 namespace CyberLock
 {
@@ -33,6 +36,10 @@ namespace CyberLock
 
         private bool BypassQuit = false;
 
+        private string exeAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\CyberLock";
+        private Settings config;
+        private bool SetDefault = false;
+
         [DllImport("user32.dll",EntryPoint = "SetForegroundWindow")]
         static extern bool SetForegroundWindow(IntPtr hWnd);
 
@@ -46,6 +53,7 @@ namespace CyberLock
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            config = new Settings();
             ScreenX = ScreenSize.Width;
             ScreenY = ScreenSize.Height;
             info_text.Location = new Point(ScreenX / 3, ScreenY / 3);
@@ -54,6 +62,26 @@ namespace CyberLock
             aTimer.Elapsed += new ElapsedEventHandler(Update);
             aTimer.Interval = 10;
             aTimer.Enabled = true;
+            if (Directory.Exists(exeAppData))
+            {
+                if(File.Exists(exeAppData + @"\Settings.lock"))
+                {
+                    var temp = File.ReadAllText(exeAppData + @"\Settings.lock");
+                    var Data = temp.Split(Convert.ToChar(","));
+                    var key = Data[0];
+                    config.SetKeyCode(Convert.ToString(key[0]));
+                    config.Shift = Convert.ToBoolean(Data[2]);
+                    config.Ctrl = Convert.ToBoolean(Data[1]);
+                }
+                else
+                {
+                    SetDefault = true;
+                }
+            }
+            else
+            {
+                Directory.CreateDirectory(exeAppData);
+            }
         }
 
         private void Update(object source, ElapsedEventArgs e)
@@ -153,10 +181,67 @@ namespace CyberLock
 
         private void Form1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            if (e.KeyCode == Keys.H && e.Shift)
+            if (SetDefault)
             {
-                BypassQuit = true;
-                Application.Exit();
+                if (e.Shift && e.KeyCode == Keys.H)
+                {
+                    BypassQuit = true;
+                    Application.Exit();
+                }
+            }
+            else
+            {
+                try
+                {
+                    if (config.Ctrl && config.Shift)
+                    {
+                        //Both if shift + ctrl pressed
+                        if (e.KeyCode.ToString() == config.KeyCode.ToString() && e.Shift && e.Control)
+                        {
+                            BypassQuit = true;
+                            Application.Exit();
+                        }
+                    }
+                    else
+                    {
+                        if (config.Ctrl)
+                        {
+                            //If only keycode + ctrl pressed
+                            if (e.KeyCode.ToString() == config.KeyCode.ToString() && e.Control)
+                            {
+                                BypassQuit = true;
+                                Application.Exit();
+                            }
+                        }
+                        else
+                        {
+                            if (config.Shift)
+                            {
+                                //If only keycode + shift pressed
+                                if (e.KeyCode.ToString() == config.KeyCode.ToString() && e.Shift)
+                                {
+                                    BypassQuit = true;
+                                    Application.Exit();
+                                }
+                            }
+                            else
+                            {
+                                //If only right keycode needed
+                                if (e.KeyCode.ToString() == config.KeyCode.ToString())
+                                {
+                                    BypassQuit = true;
+                                    Application.Exit();
+                                }
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    Process.Start("https://github.com/TheCyberDiamond/CyberLockConfigurer/releases");
+                    BypassQuit = true;
+                    Application.Exit();
+                }
             }
         }
 
