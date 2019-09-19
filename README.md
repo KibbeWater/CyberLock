@@ -3,7 +3,8 @@
  Lock your pc by raping the control of the mouse
 
 ## Unlocking
-* To unlock you pc again do "Shift + H" on your keyboard
+* To unlock you pc again do "Shift + H" on your keyboard (Unless you used the configuration tool)
+* New optional client is making you able to customize unlock keys (New in V1.2)
 
 ## Features
 * Disabling the ability from other people touching your stuff while you are away peeing
@@ -18,3 +19,7 @@
 
 ## Download
 * You can download it [here](https://github.com/TheCyberDiamond/CyberLock/releases)
+
+## Configuration client
+* Download the new client [here](https://github.com/TheCyberDiamond/CyberLockConfigurer/releases)
+* NOTE Only works in V1.2
